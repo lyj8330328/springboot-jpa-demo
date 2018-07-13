@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<div class="showing">
+    <h2>springboot+jpa</h2>
+    <div style="width:500px;margin:20px auto;text-align: center">
+        <table align="center" border="1" cellspacing="0">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <td>编辑</td>
+                <td>删除</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c: ${page}">
+                <td align="center" th:text="${c.id}"></td>
+                <td align="center" th:text="${c.name}"></td>
+                <td align="center" ><a th:href="@{/editCategory(id=${c.id})}">编辑</a></td>
+                <td align="center" ><a th:href="@{/deleteCategory(id=${c.id})}">删除</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <br />
+        <div>
+            <a th:href="@{/listCategories(start=0)}">[首  页]</a>
+            <a th:href="@{/listCategories(start=${page.number -1})}">[上一页]</a>
+            <a th:if="${page.number!=page.totalPages -1}" th:href="@{/listCategories(start=${page.number +1})}">[下一页]</a>
+            <a th:href="@{/listCategories(start=${page.totalPages -1})}">[末  页]</a>
+        </div>
+        <form action="/addCategory" method="post">
+            name:<input name="name"/><br/>
+            <button type="submit">提交</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

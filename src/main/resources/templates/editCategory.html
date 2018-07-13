@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<div class="showing">
+    <h2>springboot+jpa</h2>
+
+    <div style="margin:0px auto; width:500px">
+
+        <form action="/updateCategory" method="post">
+
+            name: <input name="name" th:value="${category.name}" /> <br/>
+
+            <input name="id" type="hidden" th:value="${category.id}" />
+            <button type="submit">提交</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
