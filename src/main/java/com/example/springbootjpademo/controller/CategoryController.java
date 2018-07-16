@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Controller
+@Controller  //普通的请求
+//@RestController  //请求返回JSON数据
 public class CategoryController {
     @Autowired
     CategoryDAO categoryDAO;
@@ -36,7 +36,7 @@ public class CategoryController {
         Page<Category> page=categoryDAO.findAll(pageable);
 //      System.out.println(page.getNumber());
 //      System.out.println(page.hasContent());
-        if(page.hasContent()==true)
+        if(page.hasContent())
           model.addAttribute("page",page);
         else
             model.addAttribute("page",page);
@@ -64,5 +64,28 @@ public class CategoryController {
         Category category=categoryDAO.getOne(id);
         model.addAttribute("category",category);
         return "editCategory";
+    }
+
+    @GetMapping("/category")
+    public List<Category> listCategory(@RequestParam(value = "start", defaultValue = "0") int start,@RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
+        start = start<0?0:start;
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(start, size, sort);
+        Page<Category> page =categoryDAO.findAll(pageable);
+        return page.getContent();
+    }
+
+    @GetMapping("/category/{id}")
+    public Category getCategory(@PathVariable("id") int id) throws Exception {
+        Category c= categoryDAO.getOne(id);
+        System.out.println(c);
+        return c;
+    }
+    @PutMapping("/category")
+    public void addCategories(@RequestBody Category category) throws Exception {
+        Category category1=new Category();
+        category1.setName(category.getName());
+        categoryDAO.save(category1);
+        System.out.println("springboot接受到浏览器以JSON格式提交的数据："+category);
     }
 }
